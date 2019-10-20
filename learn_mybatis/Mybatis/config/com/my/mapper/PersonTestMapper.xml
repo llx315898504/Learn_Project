@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:映射文件的命名空间,规范是映射文件的包的全路径 -->
+<mapper namespace="com.my.mapper.PersonTestMapper">
+	<!-- 
+	resultMap:组装配置自定义数据表与实体表之间的字段的映射关系
+	type：配置实体类的全路径，实体的阿虎局类型
+	id：映射对象的唯一标识
+	 -->
+	<resultMap type="com.my.model.PersonTest" id="baseresultMap">
+		<!-- 
+		  id:配置表的主键列；result配置表的其他列
+		  column：配置表的字段列
+		  property：配置实体的属性名
+		 -->
+		<id column="person_id" property="personId" />
+		<result column="real_name" property="realName" />
+		<result column="age" property="age" />
+		<result column="address" property="address" />
+		<result column="birthday" property="birthday" />
+	</resultMap>
+	<!-- id:sql的唯一标识 parameterType：传递给SQL的参数的数据类型 resultType：返回数据结果的类型 #{id}：用于接收参数的语法，{}中的内容，如果是一个参数内容任意，#{}使用预编译的方式生成SQL语句，可以防止SQL注入 -->
+	<select id="queryPersonTestById" parameterType="java.lang.Integer"
+		resultMap="baseresultMap">
+		select * from t_person_test where person_id=#{id}
+	</select>
+	<!-- 返回不需要映射字段的就用resultType -->
+	<select id="queryPersonTestCount" resultType="java.lang.Integer">
+	    select count(1) from t_person_test
+	</select>
+</mapper>

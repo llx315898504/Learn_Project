@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rl.ecps.mapper.EbConsoleLogMapper">
+  <resultMap id="BaseResultMap" type="com.rl.ecps.model.EbConsoleLog">
+    <id column="CONSOLE_LOG_ID" jdbcType="DECIMAL" property="consoleLogId" />
+    <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
+    <result column="ENTITY_ID" jdbcType="DECIMAL" property="entityId" />
+    <result column="USER_ID" jdbcType="DECIMAL" property="userId" />
+    <result column="OP_TYPE" jdbcType="VARCHAR" property="opType" />
+    <result column="OP_TIME" jdbcType="TIMESTAMP" property="opTime" />
+    <result column="NOTES" jdbcType="VARCHAR" property="notes" />
+    <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+  </resultMap>
+  <insert id="saveConsoleLog" parameterType="com.rl.ecps.model.EbConsoleLog">
+    insert into EB_CONSOLE_LOG
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        CONSOLE_LOG_ID,
+      <if test="entityName != null">
+        ENTITY_NAME,
+      </if>
+      <if test="entityId != null">
+        ENTITY_ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="opType != null">
+        OP_TYPE,
+      </if>
+      <if test="opTime != null">
+        OP_TIME,
+      </if>
+      <if test="notes != null">
+        NOTES,
+      </if>
+      <if test="tableName != null">
+        TABLE_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+       seqconsolelogid.nextval,
+      <if test="entityName != null">
+        #{entityName},
+      </if>
+      <if test="entityId != null">
+        #{entityId},
+      </if>
+      <if test="userId != null">
+        #{userId},
+      </if>
+      <if test="opType != null">
+        #{opType},
+      </if>
+      <if test="opTime != null">
+        #{opTime},
+      </if>
+      <if test="notes != null">
+        #{notes},
+      </if>
+      <if test="tableName != null">
+        #{tableName},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rl.ecps.model.EbConsoleLog">
+    update EB_CONSOLE_LOG
+    <set>
+      <if test="entityName != null">
+        ENTITY_NAME = #{entityName},
+      </if>
+      <if test="entityId != null">
+        ENTITY_ID = #{entityId},
+      </if>
+      <if test="userId != null">
+        USER_ID = #{userId},
+      </if>
+      <if test="opType != null">
+        OP_TYPE = #{opType},
+      </if>
+      <if test="opTime != null">
+        OP_TIME = #{opTime},
+      </if>
+      <if test="notes != null">
+        NOTES = #{notes},
+      </if>
+      <if test="tableName != null">
+        TABLE_NAME = #{tableName},
+      </if>
+    </set>
+    where CONSOLE_LOG_ID = #{consoleLogId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rl.ecps.model.EbConsoleLog">
+    update EB_CONSOLE_LOG
+    set ENTITY_NAME = #{entityName},
+      ENTITY_ID = #{entityId},
+      USER_ID = #{userId},
+      OP_TYPE = #{opType},
+      OP_TIME = #{opTime},
+      NOTES = #{notes},
+      TABLE_NAME = #{tableName}
+    where CONSOLE_LOG_ID = #{consoleLogId}
+  </update>
+</mapper>

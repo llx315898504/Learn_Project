@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MenuConfig>
+	<Displayers>
+		<Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
+	</Displayers>
+	<Menus>
+		
+        <Menu name="MainMenu" title="首页" page="/menu/mainMenu.do" />
+        <Menu name="StudentMenu" title="学生管理" page="/menu/toStudentIndex.do" />
+        <Menu name="CourseMenu" title="课程管理" page="/menu/toCourseIndex.do" />
+        <Menu name="ItemMgmtMenu" title="商品管理" page="/menu/toItemIndex.do" />
+        <Menu name="SimCardMgmtMenu" title="号卡管理" page="/menu/toSimcardIndex.do" />
+        <Menu name="OrderMgmtMenu" title="订单管理" page="/menu/toOrderIndex.do" />
+        <Menu name="ValetOrderMgmtMenu" title="代客下单" page="/menu/toValetorderIndex.do" />
+        <Menu name="EbPtlUserMgmtMenu" title="会员管理" page="/menu/toPtluserIndex.do" />
+        <Menu name="RelationShipMgmtMenu" title="合作伙伴管理" page="/menu/toRelationalIndex.do"  />
+        <Menu name="PaymentMgmtMenu" title="支付管理" page="/menu/toPaymentIndex.do" />
+        <Menu name="AdvertisementMenu" title="广告管理" page="/menu/toAdvertisementIndex.do" />
+        <Menu name="PromotionMenu" title="促销活动" page="/menu/toPromotionIndex.do" />
+        <Menu name="SystemSet" title="系统配置" page="/menu/toContentsetIndex.do" />
+        <Menu name="permission" title="权限管理" page="/menu/itoPermissionIndex.do" />
+		<Menu name="reportMenu" title="报表管理" page="/menu/toReportIndex.do" />
+        <Menu name="Logout" title="退出" page="/shop/logout" />
+		
+		<Menu name="PMS-CHANNEL" title="栏目管理" page="/menu/main.jsp" />
+		<Menu name="PMS-CONTENT" title="内容管理" page="/menu/main.jsp" />
+		<Menu name="PMS-PUBLISH" title="静态发布" page="/menu/main.jsp" />
+		<Menu name="PMS-TEMPLATE" title="模版管理" page="/menu/main.jsp" />
+		<Menu name="PMS-SYSTEM" title="PMS管理" page="/menu/main.jsp" />
+		
+		<Menu name="SAMPLE-LOGIN" title="APP-LOGIN" page="/sample/login.jsp" />
+		<Menu name="SAMPLE-INDEX" title="mainMenu.title" page="/sample/index.jsp" />
+      
+	</Menus>
+</MenuConfig>

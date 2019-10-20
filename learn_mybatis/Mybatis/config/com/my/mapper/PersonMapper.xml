@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:映射文件的命名空间,规范是映射文件的包的全路径 -->
+<mapper namespace="com.my.mapper.PersonMapper">
+<!-- 当前映射文件开启二级缓存配置，type配置使用缓存类型 -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+<resultMap type="person" id="baseresultMap">
+		<!-- 
+		  id:配置表的主键列；result配置表的其他列
+		  column：配置表的字段列
+		  property：配置实体的属性名
+		 -->
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+		<result column="address" property="address" />
+	</resultMap>
+	<!--
+	  sql片段：提取出来一些公用的查询片段供后边引用
+	  <include refid="Personlist">：引用sql片段
+	  refid：取sql片段定义中id属性的值。
+	 -->
+	<sql id="Personlist">
+		id,name,gender,address,birthday
+	</sql>
+	<!-- 
+	 id:sql的唯一标识
+	 parameterType：传递给SQL的参数的数据类型
+	 resultType：返回数据结果的类型
+	 #{id}：用于接收参数的语法，{}中的内容，如果是一个参数内容任意，#{}使用预编译的方式生成SQL语句，可以防止SQL注入
+	 -->
+	 <!-- useCache：是否启用二级缓存，TRUE是启用，FALSE是禁用，默认TRUE -->
+	<select id="queryPersonById" parameterType="java.lang.Integer"
+	resultType="person" useCache="true">
+	select * from t_person where id=#{id}
+	</select>
+	<select id="selectPersonAll" resultMap="baseresultMap">
+		select <include refid="Personlist"></include> from t_person
+	</select>
+	<!-- 
+		第一种方法：传查询对象。
+		QueryCondition  qc=new QueryCondition();
+		qc.setGender(1);
+		qc.setBirthday(new Date());
+		#{}通过查询对象属性的get方法来取值，内容直接填属性就可以。
+	 -->
+	<select id="selectPersonByParams" parameterType="qc"
+	resultMap="baseresultMap">
+	<![CDATA[
+		select * from t_person t where t.gender=#{gender} and t.birthday<#{birthday}
+	]]>
+	</select>
+	<!-- 
+		第二种方法：传map集合。
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("gender", 2);
+		map.put("birthday", new Date());
+		多个参数的查询也可以传递Map集合,#{}中的内容填Map的key的值。
+	 -->
+	<select id="selectPersonByMapParams" parameterType="java.util.Map"
+	resultMap="baseresultMap">
+	<![CDATA[
+		select * from t_person t where t.gender=#{gender} and t.birthday<#{birthday}
+	]]>
+	</select>
+	<!-- 
+		${}：非预编译，使用直接拼接字符串的方式生成sql,{}中的内容必须从map或者查询对象中取
+	 -->
+	<select id="selectPersonByGender" parameterType="map"
+	resultMap="baseresultMap">
+	<![CDATA[
+		select * from t_person t where t.gender like '%${gender}%'
+	]]>
+	</select>
+	<!-- ================================================库表变更================================================================= -->
+	<insert id="insertPerson" parameterType="person">
+	<!-- 
+		selectKey：是用于配置主键返回的。
+		keyProperty：接收返回主键的属性。
+		order：insert语句和生成主键的sql语句的执行顺序，mysql是AFTER，oracle是BEFORE。
+		resultType：是返回主键的数据类型。
+		select LAST_INSERT_ID()：生成主键的sql
+	 -->
+	<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+	select
+	LAST_INSERT_ID()
+	</selectKey>
+	insert into t_person(id,name,gender,address,birthday)
+	values(#{id},#{name},#{gender},#{address},#{birthday})
+	</insert>
+	<update id="updatePerson" parameterType="person">
+		update t_person t set t.name=#{name}, t.age=#{age},t.address=#{address}  where t.id=#{id}
+	</update>
+	<!-- mysql中删除语句不能使用别名，否则删除出错；postgresql中修改和删除都不能使用别名，否则被执行sql语句报错；oracle中别名可以正常使用 -->
+	<delete id="deletePerson" parameterType="int">
+	 delete from t_person where id=#{id}
+	</delete>
+<!-- ==========================动态sql操作========================================================================================== -->
+	<!--where：用于动态条件组合查询，可以智能的去掉where后的第一个and  -->
+<select id="selectPersonBycondition" parameterType="qc"
+	resultMap="baseresultMap">
+	select * from t_person t
+	<where>
+		<if test="name!=null">
+			t.name like '%${name}%'
+		</if>
+		<if test="gender!=null">
+			and t.gender=#{gender}
+		</if>
+		<if test="address!=null">
+			and t.address like '%${address}%'
+		</if>
+		<if test="birthday!=null">
+	<![CDATA[
+	 and  t.birthday < #{birthday}
+	 ]]>
+		</if>
+	</where>
+</select>
+<!-- 动态修改，使用<set>标签处理，能处理最后一个逗号，不要忘记加上t.id=#{id},-->
+<!--flushCache：是否刷新缓存，TRUE是刷新，FALSE是不刷新，默认TRUE  -->
+<update id="dynamicUpdatePerson" parameterType="person" flushCache="true">
+	update t_person t
+	<set>
+		t.id=#{id},
+		<if test="name!=null">
+			t.name=#{name},
+		</if>
+		<if test="gender!=null">
+			t.gender=#{gender},
+		</if>
+		<if test="address!=null">
+			t.address=#{address},
+		</if>
+		<if test="birthday!=null">
+			t.birthday=#{birthday}
+		</if>
+	</set>
+	where t.id=#{id}
+</update>
+<!--  map.put("ids",list)：map中可以存储数组，集合 ，例如：(1,2,3,4)
+	foreach：是遍历集合来组装sql的。
+	collection：map中集合的key
+	open：以某种字符开始
+	close：以某种字符结束
+	item：集合中的元素
+	separator：以某种字符分隔
+	index：当前遍历到的索引号号
+-->
+<select id="selectPersonByIn" parameterType="map" resultMap="baseresultMap">
+	select * from t_person t where t.id in
+	<foreach collection="ids" open="(" close=")" item="id"
+		separator="," index="index">
+		#{id}
+	</foreach>
+</select>
+<!-- 
+insert into t_person(id,name)values(1,"zhangsan"),(2,"lisi"),...
+map.put("pesrsonList",LIst<person> list)
+ -->
+<insert id="batchInsert" parameterType="map">
+<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+	select
+	LAST_INSERT_ID()
+	</selectKey>
+	insert into t_person(id,name,gender,address,birthday,status)values
+	<foreach collection="personList" separator="," item="person">
+	(#{person.id},#{person.name},#{person.gender},#{person.address},#{person.birthday},#{person.status})
+	</foreach>
+</insert>
+<!-- 批量删除 -->
+<delete id="batchDelete" parameterType="map">
+	delete from t_person where id in
+	<foreach collection="ids" open="(" close=")" separator=","
+		item="id">
+		#{id}
+	</foreach>
+</delete>
+<!-- ================================多表关联查询================================================================================== -->
+<resultMap type="person" id="selectOrderByPersonIdRM" extends="baseresultMap">
+<collection property="orderList" ofType="order">
+<id column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_amount" property="orderAmount" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="receive_address" property="receiveAddress" jdbcType="VARCHAR" />
+</collection>
+</resultMap>
+<resultMap type="person" id="selectOrderandOrderDetailByPersonIdRM" extends="baseresultMap">
+<collection property="orderList" ofType="order">
+<id column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_amount" property="orderAmount" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="receive_address" property="receiveAddress" jdbcType="VARCHAR" />
+    <collection property="orderDetailList" ofType="orderDetail">
+     	<id column="detail_id" property="detailId" jdbcType="INTEGER" />
+	    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+	    <result column="item_id" property="itemId" jdbcType="VARCHAR" />
+	    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+	    <result column="price" property="price" jdbcType="REAL" />
+	    <result column="amount" property="amount" jdbcType="DOUBLE" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    </collection>
+</collection>
+</resultMap>
+
+<resultMap type="person" id="selectRoleByPersonIdRM" extends="baseresultMap">
+<!-- 
+collection：一对多的关联查询
+property：一中多的属性名
+ofType：指的是多的一方的属性名
+-->
+<collection property="roleList" ofType="Role">
+	<id column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
+</collection>
+</resultMap>
+<select id="selectOrderByPersonId" parameterType="int" resultMap="selectOrderByPersonIdRM">
+SELECT  * from  t_person p,t_order o WHERE p.id=o.id and p.id=#{id}
+</select>
+<select id="selectOrderandOrderDetailByPersonId" parameterType="int" resultMap="selectOrderandOrderDetailByPersonIdRM">
+	SELECT  * from  t_person p,t_order o,t_order_detail od WHERE p.id=o.id  
+	and  o.order_id=od.order_id AND p.id=#{id};
+</select>
+<select id="selectRoleByPersonId" parameterType="int" resultMap="selectRoleByPersonIdRM">
+SELECT  * from  t_person p,t_role r,t_person_role pr where p.id=pr.id 
+and r.role_id=pr.role_id and p.id=#{id}
+</select>
+
+<resultMap type="person" id="selectIdCardByPersonIdRM" extends="baseresultMap">
+<association property="idCard" javaType="com.my.model.IdCard">
+  <id column="id" property="id" jdbcType="INTEGER" />
+   <result column="card_code" property="cardCode" jdbcType="VARCHAR" />
+</association>
+</resultMap>
+<select id="selectIdCardByPersonId" parameterType="int" resultMap="selectIdCardByPersonIdRM">
+ select  * from t_person p,t_id_card i where p.id=i.id  and p.id=#{personId}
+</select>
+<!-- ==================================================延迟加载查询================================================================= -->
+<resultMap type="Person" id="selectOrderByPersonLazyRM" extends="baseresultMap">
+<!-- 
+	column：主sql查询出来的结果中某一列作为子sql的参数
+	select：子sql的位置
+ -->
+<collection  property="orderList" column="id" select="com.my.mapper.OrderMapper.selectOrderByPersonLazy"/>
+</resultMap>
+<select id="selectOrderByPersonLazy" parameterType="int" resultMap="selectOrderByPersonLazyRM">
+ select * from t_person t where t.id=#{personId}
+</select>
+</mapper>

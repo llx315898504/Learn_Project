@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+            http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+            http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+	<!-- 引入CXF Bean定义如下,早期的版本中使用 -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<!-- 
+	endpoint：发布类的形式的服务配置
+     wsdl的全路径：http://localhost:8080/cxf_web_server/[url-partten]/adress
+	address:配置时前面必须加“/”
+	implementor:具体的服务类的路径
+	<jaxws:inInterceptors>
+	 -->
+	<jaxws:endpoint id="personService" address="/personService" implementor="com.my.service.PersonService">
+	<!-- 配置消息输入输出的拦截器 -->
+	<jaxws:inInterceptors>
+	<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+	</jaxws:inInterceptors>
+	<jaxws:outInterceptors>
+	<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+	</jaxws:outInterceptors>
+	</jaxws:endpoint>
+	<!-- 
+	endpoint：发布接口的形式的服务配置
+     wsdl的全路径：http://localhost:8080/cxf_web_server/[url-partten]/adress
+	address:配置时前面必须加“/”
+	发布接口类形式的cxf服务使用server
+   serviceClass：接口类的路径
+	 -->
+	<jaxws:server id="userService" address="/userService" serviceClass="com.my.service.UserService">
+	<!-- 配置接口的具体实现类 -->
+	<jaxws:serviceBean>
+	<bean class="com.my.service.UserServiceImpl"/>
+	</jaxws:serviceBean>
+	<jaxws:inInterceptors>
+	<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+	</jaxws:inInterceptors>
+	<jaxws:outInterceptors>
+	<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+	</jaxws:outInterceptors>
+	</jaxws:server>
+</beans>

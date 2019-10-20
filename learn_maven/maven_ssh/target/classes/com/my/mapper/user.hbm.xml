@@ -1,0 +1,13 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.my.mapper">
+	<!-- 标识一个类的xml映射,name为类名,table为表名 -->
+	<class name="com.my.model.User" table="user">
+		<!-- 主键的设置,generator标识主键生成方式 -->
+		<id name="userId" type="int" column="user_id">
+			<generator class="increment" />
+		</id>
+		<property name="name" type="string" column="name" />
+		<property name="age" type="int" column="age" />
+		<property name="address" type="string" column="address" />
+	</class>
+</hibernate-mapping>

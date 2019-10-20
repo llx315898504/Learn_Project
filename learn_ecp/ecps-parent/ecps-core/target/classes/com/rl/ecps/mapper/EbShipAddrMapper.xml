@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rl.ecps.mapper.EbShipAddrMapper">
+	<resultMap id="BaseResultMap" type="com.rl.ecps.model.EbShipAddr">
+		<id column="SHIP_ADDR_ID" jdbcType="DECIMAL" property="shipAddrId" />
+		<result column="PTL_USER_ID" jdbcType="DECIMAL" property="ptlUserId" />
+		<result column="SHIP_NAME" jdbcType="VARCHAR" property="shipName" />
+		<result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+		<result column="CITY" jdbcType="VARCHAR" property="city" />
+		<result column="DISTRICT" jdbcType="VARCHAR" property="district" />
+		<result column="ZIP_CODE" jdbcType="VARCHAR" property="zipCode" />
+		<result column="ADDR" jdbcType="VARCHAR" property="addr" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="DEFAULT_ADDR" jdbcType="DECIMAL" property="defaultAddr" />
+		<result column="FIXED_PHONE" jdbcType="VARCHAR" property="fixedPhone" />
+	</resultMap>
+	<!-- 根据用户Id查询收货地址 -->
+	<select id="selectAddressByUserId" parameterType="long"
+		resultMap="BaseResultMap">
+		select t.ship_addr_id,
+		t.ship_name,
+		t.ptl_user_id,
+		t.zip_code,
+		t.addr,
+		t.phone,
+		t.default_addr,
+		t.fixed_phone,
+		e1.erea_name province,
+		e2.erea_name city,
+		e3.erea_name district
+		from eb_ship_addr t, eb_area
+		e1, eb_area e2, eb_area e3
+		where t.province = e1.erea_id
+		and t.city =
+		e2.erea_id
+		and t.district = e3.erea_id
+		and t.ptl_user_id =#{userId}
+	</select>
+	<!-- 根据收货地址Id查询收货地址信息 -->
+	<select id="selectAddrById" parameterType="long" resultMap="BaseResultMap">
+		select * from eb_ship_addr t where t.ship_addr_id =#{shipAddrId}
+	</select>
+	<!-- 新增收货地址 -->
+	<insert id="insert" parameterType="com.rl.ecps.model.EbShipAddr">
+		insert into EB_SHIP_ADDR
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			SHIP_ADDR_ID,
+			<if test="ptlUserId != null">
+				PTL_USER_ID,
+			</if>
+			<if test="shipName != null">
+				SHIP_NAME,
+			</if>
+			<if test="province != null">
+				PROVINCE,
+			</if>
+			<if test="city != null">
+				CITY,
+			</if>
+			<if test="district != null">
+				DISTRICT,
+			</if>
+			<if test="zipCode != null">
+				ZIP_CODE,
+			</if>
+			<if test="addr != null">
+				ADDR,
+			</if>
+			<if test="phone != null">
+				PHONE,
+			</if>
+			<if test="defaultAddr != null">
+				DEFAULT_ADDR,
+			</if>
+			<if test="fixedPhone != null">
+				FIXED_PHONE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			seqshipaddrid.nextval,
+			<if test="ptlUserId != null">
+				#{ptlUserId},
+			</if>
+			<if test="shipName != null">
+				#{shipName},
+			</if>
+			<if test="province != null">
+				#{province},
+			</if>
+			<if test="city != null">
+				#{city},
+			</if>
+			<if test="district != null">
+				#{district},
+			</if>
+			<if test="zipCode != null">
+				#{zipCode},
+			</if>
+			<if test="addr != null">
+				#{addr},
+			</if>
+			<if test="phone != null">
+				#{phone},
+			</if>
+			<if test="defaultAddr != null">
+				#{defaultAddr},
+			</if>
+			<if test="fixedPhone != null">
+				#{fixedPhone},
+			</if>
+		</trim>
+	</insert>
+	<!-- 更新收货地址 -->
+	<update id="update" parameterType="com.rl.ecps.model.EbShipAddr">
+		update EB_SHIP_ADDR
+		<set>
+			<if test="ptlUserId != null">
+				PTL_USER_ID = #{ptlUserId},
+			</if>
+			<if test="shipName != null">
+				SHIP_NAME = #{shipName},
+			</if>
+			<if test="province != null">
+				PROVINCE = #{province},
+			</if>
+			<if test="city != null">
+				CITY = #{city},
+			</if>
+			<if test="district != null">
+				DISTRICT = #{district},
+			</if>
+			<if test="zipCode != null">
+				ZIP_CODE = #{zipCode},
+			</if>
+			<if test="addr != null">
+				ADDR = #{addr},
+			</if>
+			<if test="phone != null">
+				PHONE = #{phone},
+			</if>
+			<if test="defaultAddr != null">
+				DEFAULT_ADDR = #{defaultAddr},
+			</if>
+			<if test="fixedPhone != null">
+				FIXED_PHONE = #{fixedPhone},
+			</if>
+		</set>
+		where SHIP_ADDR_ID = #{shipAddrId}
+	</update>
+	<!--根据用户id设置默认收货地址 -->
+	<update id="updateDefaultAddrByUserId" parameterType="long">
+		update EB_SHIP_ADDR set DEFAULT_ADDR=0
+		where PTL_USER_ID = #{userId} and DEFAULT_ADDR=1
+	</update>
+	<!-- 根据用户Id和地址Id删除收货地址 -->
+	<delete id="deleteAddrById" parameterType="map" >
+		delete from eb_ship_addr t where t.ship_addr_id =#{shipAddrId} and t.PTL_USER_ID=#{userId}
+	</delete>
+	<!-- 查询所有的收货地址 -->
+	<select id="selectAllAddress" resultMap="BaseResultMap">
+		select t.ship_addr_id,
+		t.ship_name,
+		t.ptl_user_id,
+		t.zip_code,
+		t.addr,
+		t.phone,
+		t.default_addr,
+		t.fixed_phone,
+		e1.erea_name province,
+		e2.erea_name city,
+		e3.erea_name district
+		from eb_ship_addr t, eb_area
+		e1, eb_area e2, eb_area e3
+		where t.province = e1.erea_id
+		and t.city =
+		e2.erea_id
+		and t.district = e3.erea_id
+	</select>
+</mapper>

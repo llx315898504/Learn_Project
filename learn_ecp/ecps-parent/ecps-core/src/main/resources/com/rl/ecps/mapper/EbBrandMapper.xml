@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rl.ecps.mapper.EbBrandMapper">
+	<resultMap id="BaseResultMap" type="com.rl.ecps.model.EbBrand">
+		<id column="BRAND_ID" jdbcType="DECIMAL" property="brandId" />
+		<result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+		<result column="BRAND_DESC" jdbcType="VARCHAR" property="brandDesc" />
+		<result column="IMGS" jdbcType="VARCHAR" property="imgs" />
+		<result column="WEBSITE" jdbcType="VARCHAR" property="website" />
+		<result column="BRAND_SORT" jdbcType="DECIMAL" property="brandSort" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		BRAND_ID, BRAND_NAME, BRAND_DESC, IMGS, WEBSITE, BRAND_SORT
+	</sql>
+	<!-- 根据商品品牌ID查询品牌信息 -->
+	<select id="selectBrandById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from EB_BRAND
+		where BRAND_ID = #{brandId}
+	</select>
+	<!-- 根据商品品牌ID删除品牌信息 -->
+	<delete id="deleteBrandById" parameterType="java.lang.Long">
+		delete from
+		EB_BRAND
+		where BRAND_ID = #{brandId}
+	</delete>
+
+	<!-- Oracle中的自增使用的序列对象，我们的序列的命名规则，seqbrandid -->
+	<!-- 新增品牌信息 -->
+	<insert id="insert" parameterType="com.rl.ecps.model.EbBrand">
+		insert into EB_BRAND
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				BRAND_ID,
+			<if test="brandName != null">
+				BRAND_NAME,
+			</if>
+			<if test="brandDesc != null">
+				BRAND_DESC,
+			</if>
+			<if test="imgs != null">
+				IMGS,
+			</if>
+			<if test="website != null">
+				WEBSITE,
+			</if>
+			<if test="brandSort != null">
+				BRAND_SORT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			seqbrandid.nextval,
+			<if test="brandName != null">
+				#{brandName},
+			</if>
+			<if test="brandDesc != null">
+				#{brandDesc},
+			</if>
+			<if test="imgs != null">
+				#{imgs},
+			</if>
+			<if test="website != null">
+				#{website},
+			</if>
+			<if test="brandSort != null">
+				#{brandSort},
+			</if>
+		</trim>
+	</insert>
+	<!-- 根据品牌id更新品牌信息 -->
+	<update id="updateBrand" parameterType="com.rl.ecps.model.EbBrand">
+		update EB_BRAND
+		<set>
+			<if test="brandName != null">
+				BRAND_NAME = #{brandName},
+			</if>
+			<if test="brandDesc != null">
+				BRAND_DESC = #{brandDesc},
+			</if>
+			<if test="imgs != null">
+				IMGS = #{imgs},
+			</if>
+			<if test="website != null">
+				WEBSITE = #{website},
+			</if>
+			<if test="brandSort != null">
+				BRAND_SORT = #{brandSort},
+			</if>
+		</set>
+		where BRAND_ID = #{brandId}
+	</update>
+	<!--查询商品品牌列表 -->
+	<select id="selectBrandAll" resultMap="BaseResultMap">
+		select * from eb_brand
+	</select>
+
+	<!-- 根据品牌名称查询商品品牌信息 -->
+	<select id="selectBrandByName" parameterType="string" resultMap="BaseResultMap">
+		select * from eb_brand t where t.brand_name = #{brandName}
+	</select>
+</mapper>

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-1.6.2.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#add").click(function(){
+	var id=$("#personId").val();
+	var name=$("#name").val();
+	var gender=$("#gender").val();
+	var data = '<?xml version="1.0" ?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">'
+		+'<S:Body><ns2:addPerson xmlns:ns2="http://service.ws.my.com/">'
+		+'<arg0>123</arg0><arg1><gender>'+gender+'</gender><id>'+id+'</id><name>'+name+'</name></arg1>'
+		+'</ns2:addPerson>'
+		+'</S:Body>'
+		+'</S:Envelope>';
+	$.ajax({
+		url:"http://localhost:8080/cxf_spring_server/services/personService?wsdl",
+		type:"post",
+		dataType:"text",
+		contentType:"text/xml;charset=UTF-8",
+		data:data,
+		success:function(responseText){
+			//<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns2:savePersonResponse xmlns:ns2="http://service.ws.rl.com/"><return>success</return></ns2:savePersonResponse></soap:Body></soap:Envelope>
+		 	var obj = $(responseText);
+		 	var result = obj.find("return").text();
+		 	if(result == "SUCCESS"){
+		 		alert("添加成功");
+		 	}else{
+		 		alert("添加失败");
+		 	}
+		},
+		error:function(){
+			alert("系统错误");
+		}
+	});
+});
+	$("#query").click(function(){
+		var data = '<?xml version="1.0" ?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><ns2:listPerson xmlns:ns2="http://service.ws.my.com/"/></S:Body></S:Envelope>';
+		$.ajax({
+			url:"http://localhost:8080/cxf_spring_server/services/personService?wsdl",
+			type:"post",
+			dataType:"text",
+			contentType:"text/xml;charset=UTF-8",
+			data:data,
+			success:function(responseText){
+				$("#mydiv").empty();
+				var obj = $(responseText).find("return");
+				obj.each(function(){
+					var id = $(this).find("id").text();
+					var name = $(this).find("name").text();
+					var gender = $(this).find("gender").text();
+					$("#mydiv").append(id+ "     "+name+ "    "+gender+"<br>");
+				})
+			},
+			error:function(){
+				alert("系统错误");
+			}
+		});
+	})
+});
+</script>
+</head>
+<body>
+<p>
+	<label>id:</label><input id="personId" type="text">
+</p>
+<p>
+	<label>姓名:</label><input id="name" type="text">
+</p>
+<p>
+	<label>性别:</label><input id="gender" type="text">
+</p>
+<p>
+	<input type="button" id="add" value="添加">
+	<input type="button" id="query" value="查询">
+</p>
+<div id="mydiv" style="width: 200px;height: 200px;border: 1px solid">
+
+</div>
+</body>
+</html>

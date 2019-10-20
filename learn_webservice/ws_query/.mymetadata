@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="ws_query"
+  id="myeclipse.1535981541889"
+  context-root="/ws_query"
+  j2ee-spec="5.0"
+  archive="ws_query.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

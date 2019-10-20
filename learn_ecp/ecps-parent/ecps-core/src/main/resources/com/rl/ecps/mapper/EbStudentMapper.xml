@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rl.ecps.mapper.EbStudentMapper">
+	<resultMap id="BaseResultMap" type="com.rl.ecps.model.EbStudent">
+		<id column="std_id" jdbcType="DECIMAL" property="stdId" />
+		<result column="std_name" jdbcType="VARCHAR" property="stdName" />
+	</resultMap>
+
+	<!-- Oracle中的自增使用的序列对象，我们的序列的命名规则，seqbrandid -->
+	<insert id="insert" parameterType="com.rl.ecps.model.EbStudent">
+		insert into eb_student (std_id, std_name)
+		values (#{stdId},#{stdName})
+	</insert>
+</mapper>

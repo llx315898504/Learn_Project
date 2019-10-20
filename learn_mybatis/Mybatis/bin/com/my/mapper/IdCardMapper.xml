@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.my.mapper.IdCardMapper">
+	<resultMap id="BaseResultMap" type="com.my.model.IdCard">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="card_code" property="cardCode" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="com.my.model.IdCard" id="selectPersonByIdCardRM"
+		extends="BaseResultMap">
+		<association property="person" javaType="Person">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="age" property="age" />
+			<result column="address" property="address" />
+			<result column="status" property="status" />
+		</association>
+	</resultMap>
+	<select id="selectPersonByIdCard" parameterType="int"
+		resultMap="selectPersonByIdCardRM">
+		select * from t_person p,t_id_card i where p.id=i.id and i.id=#{personId}
+	</select>
+</mapper>

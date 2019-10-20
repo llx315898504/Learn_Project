@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	version="2.5"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<!-- 
+		使用spring来加载cxf的服务类的配置文件，服务类的对象由spring来创建，服务类的对象存在springIoc的容器中
+	 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:cxf-servlet.xml,classpath*:bean.xml</param-value>
+	</context-param>
+	
+	
+	<!-- servlet负责发布服务类 -->
+	<servlet>
+		<servlet-name>mycxf</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>mycxf</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+</web-app>
+

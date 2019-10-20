@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rl.ecps.mapper.EbOrderMapper">
+	<resultMap id="BaseResultMap" type="com.rl.ecps.model.EbOrder">
+		<id column="ORDER_ID" jdbcType="DECIMAL" property="orderId" />
+		<result column="PTL_USER_ID" jdbcType="DECIMAL" property="ptlUserId" />
+		<result column="USERNAME" jdbcType="VARCHAR" property="username" />
+		<result column="ORDER_NUM" jdbcType="VARCHAR" property="orderNum" />
+		<result column="PAYMENT" jdbcType="DECIMAL" property="payment" />
+		<result column="PAY_PLATFORM" jdbcType="DECIMAL" property="payPlatform" />
+		<result column="DELIVERY" jdbcType="DECIMAL" property="delivery" />
+		<result column="IS_CONFIRM" jdbcType="DECIMAL" property="isConfirm" />
+		<result column="ORDER_SUM" jdbcType="DECIMAL" property="orderSum" />
+		<result column="SHIP_FEE" jdbcType="DECIMAL" property="shipFee" />
+		<result column="IS_PAID" jdbcType="DECIMAL" property="isPaid" />
+		<result column="ORDER_STATE" jdbcType="DECIMAL" property="orderState" />
+		<result column="PAYMENT_CASH" jdbcType="DECIMAL" property="paymentCash" />
+		<result column="DISTRI_ID" jdbcType="DECIMAL" property="distriId" />
+		<result column="DELIVERY_METHOD" jdbcType="DECIMAL" property="deliveryMethod" />
+		<result column="PAYMENT_NO" jdbcType="VARCHAR" property="paymentNo" />
+		<result column="ORDER_TIME" jdbcType="TIMESTAMP" property="orderTime" />
+		<result column="PAY_TIME" jdbcType="TIMESTAMP" property="payTime" />
+		<result column="DEPOSIT_TIME" jdbcType="TIMESTAMP" property="depositTime" />
+		<result column="SUCCESS_TIME" jdbcType="TIMESTAMP" property="successTime" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="SRV_TYPE" jdbcType="DECIMAL" property="srvType" />
+		<result column="SELF_COLLECT_SITE" jdbcType="VARCHAR" property="selfCollectSite" />
+		<result column="SELF_COLLECT_SITE_ID" jdbcType="DECIMAL"
+			property="selfCollectSiteId" />
+		<result column="IS_DELETED" jdbcType="DECIMAL" property="isDeleted" />
+		<result column="IS_DISPLAY" jdbcType="DECIMAL" property="isDisplay" />
+		<result column="NOTES" jdbcType="VARCHAR" property="notes" />
+		<result column="SHIP_NAME" jdbcType="VARCHAR" property="shipName" />
+		<result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+		<result column="CITY" jdbcType="VARCHAR" property="city" />
+		<result column="DISTRICT" jdbcType="VARCHAR" property="district" />
+		<result column="ZIP_CODE" jdbcType="VARCHAR" property="zipCode" />
+		<result column="ADDR" jdbcType="VARCHAR" property="addr" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="PAYABLE" jdbcType="DECIMAL" property="payable" />
+		<result column="COMPANY" jdbcType="VARCHAR" property="company" />
+		<result column="CONTENTS" jdbcType="DECIMAL" property="contents" />
+		<result column="IS_CALL" jdbcType="DECIMAL" property="isCall" />
+		<result column="DELIVERY_NO" jdbcType="VARCHAR" property="deliveryNo" />
+		<result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode" />
+		<result column="AREA_NAME" jdbcType="VARCHAR" property="areaName" />
+		<result column="IS_PRINT" jdbcType="DECIMAL" property="isPrint" />
+		<result column="CRM_CALLS_TIME" jdbcType="TIMESTAMP" property="crmCallsTime" />
+		<result column="IS_OFFER_RELEASE" jdbcType="DECIMAL" property="isOfferRelease" />
+		<result column="JOB_NUM" jdbcType="VARCHAR" property="jobNum" />
+		<result column="ORDER_TYPE" jdbcType="DECIMAL" property="orderType" />
+		<result column="FIXED_PHONE" jdbcType="VARCHAR" property="fixedPhone" />
+		<result column="ATTACH_FILE" jdbcType="VARCHAR" property="attachFile" />
+		<result column="RETURN_TYPE" jdbcType="DECIMAL" property="returnType" />
+		<result column="SECKILL_ID" jdbcType="DECIMAL" property="seckillId" />
+		<result column="ORDER_SOURCE" jdbcType="DECIMAL" property="orderSource" />
+		<result column="ORDER_EXT1" jdbcType="VARCHAR" property="orderExt1" />
+		<result column="ORDER_EXT2" jdbcType="VARCHAR" property="orderExt2" />
+		<result column="ORDER_EXT3" jdbcType="VARCHAR" property="orderExt3" />
+		<result column="ORDER_EXT4" jdbcType="VARCHAR" property="orderExt4" />
+		<result column="ORDER_EXT5" jdbcType="VARCHAR" property="orderExt5" />
+	</resultMap>
+	<!--根据订单号查询订单数据 -->
+	<select id="selectOrderById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select *
+		from EB_ORDER
+		where ORDER_ID = #{orderId}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		EB_ORDER
+		where ORDER_ID = #{orderId}
+	</delete>
+	<!-- 创建订单 -->
+	<insert id="insert" parameterType="com.rl.ecps.model.EbOrder">
+		<selectKey keyProperty="orderId" order="BEFORE" resultType="long">
+			select seqorderid.nextval from dual
+		</selectKey>
+		insert into EB_ORDER
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				ORDER_ID,
+			</if>
+			<if test="ptlUserId != null">
+				PTL_USER_ID,
+			</if>
+			<if test="username != null">
+				USERNAME,
+			</if>
+			<if test="orderNum != null">
+				ORDER_NUM,
+			</if>
+			<if test="payment != null">
+				PAYMENT,
+			</if>
+			<if test="payPlatform != null">
+				PAY_PLATFORM,
+			</if>
+			<if test="delivery != null">
+				DELIVERY,
+			</if>
+			<if test="isConfirm != null">
+				IS_CONFIRM,
+			</if>
+			<if test="orderSum != null">
+				ORDER_SUM,
+			</if>
+			<if test="shipFee != null">
+				SHIP_FEE,
+			</if>
+			<if test="isPaid != null">
+				IS_PAID,
+			</if>
+			<if test="orderState != null">
+				ORDER_STATE,
+			</if>
+			<if test="paymentCash != null">
+				PAYMENT_CASH,
+			</if>
+			<if test="distriId != null">
+				DISTRI_ID,
+			</if>
+			<if test="deliveryMethod != null">
+				DELIVERY_METHOD,
+			</if>
+			<if test="paymentNo != null">
+				PAYMENT_NO,
+			</if>
+			<if test="orderTime != null">
+				ORDER_TIME,
+			</if>
+			<if test="payTime != null">
+				PAY_TIME,
+			</if>
+			<if test="depositTime != null">
+				DEPOSIT_TIME,
+			</if>
+			<if test="successTime != null">
+				SUCCESS_TIME,
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME,
+			</if>
+			<if test="srvType != null">
+				SRV_TYPE,
+			</if>
+			<if test="selfCollectSite != null">
+				SELF_COLLECT_SITE,
+			</if>
+			<if test="selfCollectSiteId != null">
+				SELF_COLLECT_SITE_ID,
+			</if>
+			<if test="isDeleted != null">
+				IS_DELETED,
+			</if>
+			<if test="isDisplay != null">
+				IS_DISPLAY,
+			</if>
+			<if test="notes != null">
+				NOTES,
+			</if>
+			<if test="shipName != null">
+				SHIP_NAME,
+			</if>
+			<if test="province != null">
+				PROVINCE,
+			</if>
+			<if test="city != null">
+				CITY,
+			</if>
+			<if test="district != null">
+				DISTRICT,
+			</if>
+			<if test="zipCode != null">
+				ZIP_CODE,
+			</if>
+			<if test="addr != null">
+				ADDR,
+			</if>
+			<if test="phone != null">
+				PHONE,
+			</if>
+			<if test="payable != null">
+				PAYABLE,
+			</if>
+			<if test="company != null">
+				COMPANY,
+			</if>
+			<if test="contents != null">
+				CONTENTS,
+			</if>
+			<if test="isCall != null">
+				IS_CALL,
+			</if>
+			<if test="deliveryNo != null">
+				DELIVERY_NO,
+			</if>
+			<if test="areaCode != null">
+				AREA_CODE,
+			</if>
+			<if test="areaName != null">
+				AREA_NAME,
+			</if>
+			<if test="isPrint != null">
+				IS_PRINT,
+			</if>
+			<if test="crmCallsTime != null">
+				CRM_CALLS_TIME,
+			</if>
+			<if test="isOfferRelease != null">
+				IS_OFFER_RELEASE,
+			</if>
+			<if test="jobNum != null">
+				JOB_NUM,
+			</if>
+			<if test="orderType != null">
+				ORDER_TYPE,
+			</if>
+			<if test="fixedPhone != null">
+				FIXED_PHONE,
+			</if>
+			<if test="attachFile != null">
+				ATTACH_FILE,
+			</if>
+			<if test="returnType != null">
+				RETURN_TYPE,
+			</if>
+			<if test="seckillId != null">
+				SECKILL_ID,
+			</if>
+			<if test="orderSource != null">
+				ORDER_SOURCE,
+			</if>
+			<if test="orderExt1 != null">
+				ORDER_EXT1,
+			</if>
+			<if test="orderExt2 != null">
+				ORDER_EXT2,
+			</if>
+			<if test="orderExt3 != null">
+				ORDER_EXT3,
+			</if>
+			<if test="orderExt4 != null">
+				ORDER_EXT4,
+			</if>
+			<if test="orderExt5 != null">
+				ORDER_EXT5,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				#{orderId},
+			</if>
+			<if test="ptlUserId != null">
+				#{ptlUserId},
+			</if>
+			<if test="username != null">
+				#{username},
+			</if>
+			<if test="orderNum != null">
+				#{orderNum},
+			</if>
+			<if test="payment != null">
+				#{payment},
+			</if>
+			<if test="payPlatform != null">
+				#{payPlatform},
+			</if>
+			<if test="delivery != null">
+				#{delivery},
+			</if>
+			<if test="isConfirm != null">
+				#{isConfirm},
+			</if>
+			<if test="orderSum != null">
+				#{orderSum},
+			</if>
+			<if test="shipFee != null">
+				#{shipFee},
+			</if>
+			<if test="isPaid != null">
+				#{isPaid},
+			</if>
+			<if test="orderState != null">
+				#{orderState},
+			</if>
+			<if test="paymentCash != null">
+				#{paymentCash},
+			</if>
+			<if test="distriId != null">
+				#{distriId},
+			</if>
+			<if test="deliveryMethod != null">
+				#{deliveryMethod},
+			</if>
+			<if test="paymentNo != null">
+				#{paymentNo},
+			</if>
+			<if test="orderTime != null">
+				#{orderTime},
+			</if>
+			<if test="payTime != null">
+				#{payTime},
+			</if>
+			<if test="depositTime != null">
+				#{depositTime},
+			</if>
+			<if test="successTime != null">
+				#{successTime},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="srvType != null">
+				#{srvType},
+			</if>
+			<if test="selfCollectSite != null">
+				#{selfCollectSite},
+			</if>
+			<if test="selfCollectSiteId != null">
+				#{selfCollectSiteId},
+			</if>
+			<if test="isDeleted != null">
+				#{isDeleted},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="notes != null">
+				#{notes},
+			</if>
+			<if test="shipName != null">
+				#{shipName},
+			</if>
+			<if test="province != null">
+				#{province},
+			</if>
+			<if test="city != null">
+				#{city},
+			</if>
+			<if test="district != null">
+				#{district},
+			</if>
+			<if test="zipCode != null">
+				#{zipCode},
+			</if>
+			<if test="addr != null">
+				#{addr},
+			</if>
+			<if test="phone != null">
+				#{phone},
+			</if>
+			<if test="payable != null">
+				#{payable},
+			</if>
+			<if test="company != null">
+				#{company},
+			</if>
+			<if test="contents != null">
+				#{contents},
+			</if>
+			<if test="isCall != null">
+				#{isCall},
+			</if>
+			<if test="deliveryNo != null">
+				#{deliveryNo},
+			</if>
+			<if test="areaCode != null">
+				#{areaCode},
+			</if>
+			<if test="areaName != null">
+				#{areaName},
+			</if>
+			<if test="isPrint != null">
+				#{isPrint},
+			</if>
+			<if test="crmCallsTime != null">
+				#{crmCallsTime},
+			</if>
+			<if test="isOfferRelease != null">
+				#{isOfferRelease},
+			</if>
+			<if test="jobNum != null">
+				#{jobNum},
+			</if>
+			<if test="orderType != null">
+				#{orderType},
+			</if>
+			<if test="fixedPhone != null">
+				#{fixedPhone},
+			</if>
+			<if test="attachFile != null">
+				#{attachFile},
+			</if>
+			<if test="returnType != null">
+				#{returnType},
+			</if>
+			<if test="seckillId != null">
+				#{seckillId},
+			</if>
+			<if test="orderSource != null">
+				#{orderSource},
+			</if>
+			<if test="orderExt1 != null">
+				#{orderExt1},
+			</if>
+			<if test="orderExt2 != null">
+				#{orderExt2},
+			</if>
+			<if test="orderExt3 != null">
+				#{orderExt3},
+			</if>
+			<if test="orderExt4 != null">
+				#{orderExt4},
+			</if>
+			<if test="orderExt5 != null">
+				#{orderExt5},
+			</if>
+		</trim>
+	</insert>
+	<!--更新订单 -->
+	<update id="updateOrder" parameterType="com.rl.ecps.model.EbOrder">
+		update EB_ORDER
+		<set>
+			<if test="ptlUserId != null">
+				PTL_USER_ID = #{ptlUserId},
+			</if>
+			<if test="username != null">
+				USERNAME = #{username},
+			</if>
+			<if test="orderNum != null">
+				ORDER_NUM = #{orderNum},
+			</if>
+			<if test="payment != null">
+				PAYMENT = #{payment},
+			</if>
+			<if test="payPlatform != null">
+				PAY_PLATFORM = #{payPlatform},
+			</if>
+			<if test="delivery != null">
+				DELIVERY = #{delivery},
+			</if>
+			<if test="isConfirm != null">
+				IS_CONFIRM = #{isConfirm},
+			</if>
+			<if test="orderSum != null">
+				ORDER_SUM = #{orderSum},
+			</if>
+			<if test="shipFee != null">
+				SHIP_FEE = #{shipFee},
+			</if>
+			<if test="isPaid != null">
+				IS_PAID = #{isPaid},
+			</if>
+			<if test="orderState != null">
+				ORDER_STATE = #{orderState},
+			</if>
+			<if test="paymentCash != null">
+				PAYMENT_CASH = #{paymentCash},
+			</if>
+			<if test="distriId != null">
+				DISTRI_ID = #{distriId},
+			</if>
+			<if test="deliveryMethod != null">
+				DELIVERY_METHOD = #{deliveryMethod},
+			</if>
+			<if test="paymentNo != null">
+				PAYMENT_NO = #{paymentNo},
+			</if>
+			<if test="orderTime != null">
+				ORDER_TIME = #{orderTime},
+			</if>
+			<if test="payTime != null">
+				PAY_TIME = #{payTime},
+			</if>
+			<if test="depositTime != null">
+				DEPOSIT_TIME = #{depositTime},
+			</if>
+			<if test="successTime != null">
+				SUCCESS_TIME = #{successTime},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime},
+			</if>
+			<if test="srvType != null">
+				SRV_TYPE = #{srvType},
+			</if>
+			<if test="selfCollectSite != null">
+				SELF_COLLECT_SITE = #{selfCollectSite},
+			</if>
+			<if test="selfCollectSiteId != null">
+				SELF_COLLECT_SITE_ID = #{selfCollectSiteId},
+			</if>
+			<if test="isDeleted != null">
+				IS_DELETED = #{isDeleted},
+			</if>
+			<if test="isDisplay != null">
+				IS_DISPLAY = #{isDisplay},
+			</if>
+			<if test="notes != null">
+				NOTES = #{notes},
+			</if>
+			<if test="shipName != null">
+				SHIP_NAME = #{shipName},
+			</if>
+			<if test="province != null">
+				PROVINCE = #{province},
+			</if>
+			<if test="city != null">
+				CITY = #{city},
+			</if>
+			<if test="district != null">
+				DISTRICT = #{district},
+			</if>
+			<if test="zipCode != null">
+				ZIP_CODE = #{zipCode},
+			</if>
+			<if test="addr != null">
+				ADDR = #{addr},
+			</if>
+			<if test="phone != null">
+				PHONE = #{phone},
+			</if>
+			<if test="payable != null">
+				PAYABLE = #{payable},
+			</if>
+			<if test="company != null">
+				COMPANY = #{company},
+			</if>
+			<if test="contents != null">
+				CONTENTS = #{contents},
+			</if>
+			<if test="isCall != null">
+				IS_CALL = #{isCall},
+			</if>
+			<if test="deliveryNo != null">
+				DELIVERY_NO = #{deliveryNo},
+			</if>
+			<if test="areaCode != null">
+				AREA_CODE = #{areaCode},
+			</if>
+			<if test="areaName != null">
+				AREA_NAME = #{areaName},
+			</if>
+			<if test="isPrint != null">
+				IS_PRINT = #{isPrint},
+			</if>
+			<if test="crmCallsTime != null">
+				CRM_CALLS_TIME = #{crmCallsTime},
+			</if>
+			<if test="isOfferRelease != null">
+				IS_OFFER_RELEASE = #{isOfferRelease},
+			</if>
+			<if test="jobNum != null">
+				JOB_NUM = #{jobNum},
+			</if>
+			<if test="orderType != null">
+				ORDER_TYPE = #{orderType},
+			</if>
+			<if test="fixedPhone != null">
+				FIXED_PHONE = #{fixedPhone},
+			</if>
+			<if test="attachFile != null">
+				ATTACH_FILE = #{attachFile},
+			</if>
+			<if test="returnType != null">
+				RETURN_TYPE = #{returnType},
+			</if>
+			<if test="seckillId != null">
+				SECKILL_ID = #{seckillId},
+			</if>
+			<if test="orderSource != null">
+				ORDER_SOURCE = #{orderSource},
+			</if>
+			<if test="orderExt1 != null">
+				ORDER_EXT1 = #{orderExt1},
+			</if>
+			<if test="orderExt2 != null">
+				ORDER_EXT2 = #{orderExt2},
+			</if>
+			<if test="orderExt3 != null">
+				ORDER_EXT3 = #{orderExt3},
+			</if>
+			<if test="orderExt4 != null">
+				ORDER_EXT4 = #{orderExt4},
+			</if>
+			<if test="orderExt5 != null">
+				ORDER_EXT5 = #{orderExt5},
+			</if>
+		</set>
+		where ORDER_ID = #{orderId}
+	</update>
+	<resultMap type="com.rl.ecps.model.EbOrder" id="selectOrderDetailByIdRM"
+		extends="BaseResultMap">
+		<collection property="detailList" ofType="com.rl.ecps.model.EbOrderDetail">
+			<id column="ORDER_DETAIL_ID" jdbcType="DECIMAL" property="orderDetailId" />
+			<result column="ORDER_ID" jdbcType="DECIMAL" property="orderId" />
+			<result column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+			<result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
+			<result column="ITEM_NO" jdbcType="VARCHAR" property="itemNo" />
+			<result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+			<result column="SKU" jdbcType="VARCHAR" property="sku" />
+			<result column="SKU_IMG" jdbcType="VARCHAR" property="skuImg" />
+			<result column="SKU_NAME" jdbcType="VARCHAR" property="skuName" />
+			<result column="SKU_CAT_TYPE" jdbcType="DECIMAL" property="skuCatType" />
+			<result column="SKU_SPEC" jdbcType="VARCHAR" property="skuSpec" />
+			<result column="MARKET_PRICE" jdbcType="DECIMAL" property="marketPrice" />
+			<result column="SKU_DISCOUNT" jdbcType="DECIMAL" property="skuDiscount" />
+			<result column="SKU_PRICE" jdbcType="DECIMAL" property="skuPrice" />
+			<result column="OFFER_GROUP_ID" jdbcType="DECIMAL" property="offerGroupId" />
+			<result column="OFFER_GROUP_NAME" jdbcType="VARCHAR" property="offerGroupName" />
+			<result column="OFFER_TYPE" jdbcType="DECIMAL" property="offerType" />
+			<result column="SHORT_NAME" jdbcType="VARCHAR" property="shortName" />
+			<result column="OFFER_ID" jdbcType="DECIMAL" property="offerId" />
+			<result column="OFFER_NAME" jdbcType="VARCHAR" property="offerName" />
+			<result column="OFFER_NO" jdbcType="VARCHAR" property="offerNo" />
+			<result column="SHORT_NAME2" jdbcType="VARCHAR" property="shortName2" />
+			<result column="OFFER_TERM" jdbcType="DECIMAL" property="offerTerm" />
+			<result column="COMMIT_MONTHLY" jdbcType="DECIMAL" property="commitMonthly" />
+			<result column="PREPAID" jdbcType="DECIMAL" property="prepaid" />
+			<result column="PERIOD" jdbcType="DECIMAL" property="period" />
+			<result column="REFUND_MONTHLY" jdbcType="DECIMAL" property="refundMonthly" />
+			<result column="REFUND_1ST_MONTH" jdbcType="DECIMAL" property="refund1stMonth" />
+			<result column="REFUND_LAST_MONTH" jdbcType="DECIMAL"
+				property="refundLastMonth" />
+			<result column="ORDER_DETAIL_TYPE" jdbcType="DECIMAL"
+				property="orderDetailType" />
+			<result column="MERCHANT_ID" jdbcType="DECIMAL" property="merchantId" />
+			<result column="QUANTITY" jdbcType="DECIMAL" property="quantity" />
+			<result column="PRICE" jdbcType="DECIMAL" property="price" />
+			<result column="SERIESCODE" jdbcType="VARCHAR" property="seriescode" />
+			<result column="OFFER_GROUP_NO" jdbcType="VARCHAR" property="offerGroupNo" />
+			<result column="PROMO_TYPE" jdbcType="DECIMAL" property="promoType" />
+			<result column="COND_ID" jdbcType="VARCHAR" property="condId" />
+			<result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
+			<result column="PAYMENT_PRICE" jdbcType="DECIMAL" property="paymentPrice" />
+			<result column="PURCHASE_PRICE" jdbcType="DECIMAL" property="purchasePrice" />
+			<result column="SIMCARD_SUIT_ID" jdbcType="DECIMAL" property="simcardSuitId" />
+			<result column="SIMCARD_PACKAGE_ID" jdbcType="VARCHAR"
+				property="simcardPackageId" />
+		</collection>
+	</resultMap>
+	<!-- 根据订单Id查询订单及订单明细数据 -->
+	<select id="selectOrderDetailById" parameterType="long"
+		resultMap="selectOrderDetailByIdRM">
+		select 
+		eo.*,
+		ed.*
+		from eb_order eo, eb_order_detail ed
+		where eo.order_id = ed.order_id
+		and eo.order_id = #{orderId}
+	</select>
+</mapper>

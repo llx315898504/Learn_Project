@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.my.mapper.RoleMapper">
+	<resultMap id="BaseResultMap" type="Role">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="Role" id="selectPersonByRoleRM" extends="BaseResultMap">
+		<collection property="personList" ofType="person">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="age" property="age" />
+			<result column="address" property="address" />
+			<result column="status" property="status" />
+		</collection>
+	</resultMap>
+	<select id="selectPersonByRole" parameterType="int"
+		resultMap="selectPersonByRoleRM">
+		SELECT * from t_role r, t_person p,t_person_role pr
+		where r.role_id=pr.role_id and pr.id=p.id and r.role_id=#{id};
+	</select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- package：是当前配置文件的公共的包 -->
+<hibernate-mapping package="com.my.model">
+	
+	<class name="Team" table="t_team">
+		<id name="teamId" column="team_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name"></property>
+		<property name="address"></property>
+		<!-- 
+			name：多的一端的集合属性名字
+			inverse:一对多反转，我可以写代码时从一的一端来考虑，执行的sql是从多的一端来执行的。
+		 -->
+		<set name="empSet" cascade="save-update" inverse="true">
+			<!--
+				 key：多的一端在表中产生的外键名字
+			 -->
+			<key column="team_id"></key>
+			<!-- class集合中所对应的类 -->
+			<one-to-many class="Employee"/>
+		</set>
+	</class>
+</hibernate-mapping>

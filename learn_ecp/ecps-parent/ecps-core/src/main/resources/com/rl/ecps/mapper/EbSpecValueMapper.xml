@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rl.ecps.mapper.EbSpecValueMapper">
+  <resultMap id="BaseResultMap" type="com.rl.ecps.model.EbSpecValue">
+    <id column="SPEC_ID" jdbcType="DECIMAL" property="specId" />
+    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+    <result column="FEATURE_ID" jdbcType="DECIMAL" property="featureId" />
+    <result column="SPEC_VALUE" jdbcType="VARCHAR" property="specValue" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from EB_SPEC_VALUE
+    where SPEC_ID = #{specId}
+  </delete>
+  <!-- 添加商品的特殊属性 -->
+  <insert id="saveSpecValue" parameterType="com.rl.ecps.model.EbSpecValue">
+    insert into EB_SPEC_VALUE (SPEC_ID, SKU_ID, FEATURE_ID, 
+      SPEC_VALUE)
+    values (seqspecvalueid.nextval, #{skuId}, #{featureId}, 
+      #{specValue})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rl.ecps.model.EbSpecValue">
+    insert into EB_SPEC_VALUE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="specId != null">
+        SPEC_ID,
+      </if>
+      <if test="skuId != null">
+        SKU_ID,
+      </if>
+      <if test="featureId != null">
+        FEATURE_ID,
+      </if>
+      <if test="specValue != null">
+        SPEC_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="specId != null">
+        #{specId},
+      </if>
+      <if test="skuId != null">
+        #{skuId},
+      </if>
+      <if test="featureId != null">
+        #{featureId},
+      </if>
+      <if test="specValue != null">
+        #{specValue},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rl.ecps.model.EbSpecValue">
+    update EB_SPEC_VALUE
+    <set>
+      <if test="skuId != null">
+        SKU_ID = #{skuId},
+      </if>
+      <if test="featureId != null">
+        FEATURE_ID = #{featureId},
+      </if>
+      <if test="specValue != null">
+        SPEC_VALUE = #{specValue},
+      </if>
+    </set>
+    where SPEC_ID = #{specId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rl.ecps.model.EbSpecValue">
+    update EB_SPEC_VALUE
+    set SKU_ID = #{skuId},
+      FEATURE_ID = #{featureId},
+      SPEC_VALUE = #{specValue}
+    where SPEC_ID = #{specId}
+  </update>
+</mapper>

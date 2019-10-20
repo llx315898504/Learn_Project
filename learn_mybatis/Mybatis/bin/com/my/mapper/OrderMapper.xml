@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.my.mapper.OrderMapper">
+	<resultMap id="BaseResultMap" type="com.my.model.Order">
+		<id column="order_id" property="orderId" jdbcType="INTEGER" />
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="order_amount" property="orderAmount" jdbcType="DOUBLE" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="receive_address" property="receiveAddress"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 
+	association：用于多对一的关联查询配置
+	property：多的一端一的属性的属性名称
+	javaType：多的一端一的属性的数据类型
+	 -->
+<resultMap type="Order" id="selectPersonByOrderIdRM" extends="BaseResultMap">
+	<association property="person" javaType="person">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+		<result column="address" property="address" />
+		<result column="status" property="status" />
+	</association>
+</resultMap>
+<select id="selectPersonByOrderId" parameterType="int"
+		resultMap="selectPersonByOrderIdRM">
+		select * from t_order o,t_person p
+		where o.id=p.id and
+		o.order_id=#{id}
+</select>
+<!-- 如果association和都有collection，association要放在collection的前面 -->	
+<resultMap type="Order" id="selectPersonAndDetailByOrderIdRM"
+	extends="BaseResultMap">
+	<association property="person" javaType="person">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+		<result column="address" property="address" />
+		<result column="status" property="status" />
+	</association>
+	<collection property="orderDetailList" ofType="OrderDetail">
+		<id column="detail_id" property="detailId" jdbcType="INTEGER" />
+		<result column="order_id" property="orderId" jdbcType="INTEGER" />
+		<result column="item_id" property="itemId" jdbcType="VARCHAR" />
+		<result column="item_name" property="itemName" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="amount" property="amount" jdbcType="DOUBLE" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="quantity" property="quantity" jdbcType="INTEGER" />
+	</collection>
+</resultMap>
+<resultMap type="Order" id="selectPersonAndDetailByOrderIdRM1"
+	extends="selectPersonByOrderIdRM">
+	<collection property="orderDetailList" ofType="OrderDetail">
+		<id column="detail_id" property="detailId" jdbcType="INTEGER" />
+		<result column="order_id" property="orderId" jdbcType="INTEGER" />
+		<result column="item_id" property="itemId" jdbcType="VARCHAR" />
+		<result column="item_name" property="itemName" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="amount" property="amount" jdbcType="DOUBLE" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="quantity" property="quantity" jdbcType="INTEGER" />
+	</collection>
+</resultMap>
+	<select id="selectPersonAndDetailByOrderId" parameterType="int"
+		resultMap="selectPersonAndDetailByOrderIdRM1">
+		select * from t_order o,t_person p,t_order_detail od
+		where o.id=p.id and o.order_id=od.order_id and o.order_id=#{orderId}
+	</select>
+	<select id="selectOrderByPersonLazy" parameterType="int" resultMap="BaseResultMap">
+	select * from t_order t where t.id=#{personId}
+	</select>
+<resultMap type="Order" id="selectPersonByorderlazrRM"
+	extends="BaseResultMap">
+	<collection  property="person" column="id"
+		select="com.my.mapper.PersonMapper.queryPersonById"></collection>
+</resultMap>
+	<select id="selectPersonByorderlazy" parameterType="int"
+		resultMap="selectPersonByorderlazrRM">
+		select * from t_order t where t.order_id=#{orderId}
+	</select>
+	<resultMap type="Order" id="selectPersonAndDetailByOrderLazyRM"
+	extends="selectPersonByorderlazrRM">
+	<association property="orderDetailList" column="order_id" select="com.my.mapper.OrderDetailMapper.selectOrderDetailByOrderId"></association>
+</resultMap>
+	<select id="selectPersonAndDetailByorderlazy" parameterType="int"
+		resultMap="selectPersonAndDetailByOrderLazyRM">
+		select * from t_order t where t.order_id=#{orderId}
+	</select>
+</mapper>

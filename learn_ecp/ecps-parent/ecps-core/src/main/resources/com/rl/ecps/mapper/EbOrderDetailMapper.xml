@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rl.ecps.mapper.EbOrderDetailMapper">
+  <resultMap id="BaseResultMap" type="com.rl.ecps.model.EbOrderDetail">
+    <id column="ORDER_DETAIL_ID" jdbcType="DECIMAL" property="orderDetailId" />
+    <result column="ORDER_ID" jdbcType="DECIMAL" property="orderId" />
+    <result column="ITEM_ID" jdbcType="DECIMAL" property="itemId" />
+    <result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
+    <result column="ITEM_NO" jdbcType="VARCHAR" property="itemNo" />
+    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+    <result column="SKU" jdbcType="VARCHAR" property="sku" />
+    <result column="SKU_IMG" jdbcType="VARCHAR" property="skuImg" />
+    <result column="SKU_NAME" jdbcType="VARCHAR" property="skuName" />
+    <result column="SKU_CAT_TYPE" jdbcType="DECIMAL" property="skuCatType" />
+    <result column="SKU_SPEC" jdbcType="VARCHAR" property="skuSpec" />
+    <result column="MARKET_PRICE" jdbcType="DECIMAL" property="marketPrice" />
+    <result column="SKU_DISCOUNT" jdbcType="DECIMAL" property="skuDiscount" />
+    <result column="SKU_PRICE" jdbcType="DECIMAL" property="skuPrice" />
+    <result column="OFFER_GROUP_ID" jdbcType="DECIMAL" property="offerGroupId" />
+    <result column="OFFER_GROUP_NAME" jdbcType="VARCHAR" property="offerGroupName" />
+    <result column="OFFER_TYPE" jdbcType="DECIMAL" property="offerType" />
+    <result column="SHORT_NAME" jdbcType="VARCHAR" property="shortName" />
+    <result column="OFFER_ID" jdbcType="DECIMAL" property="offerId" />
+    <result column="OFFER_NAME" jdbcType="VARCHAR" property="offerName" />
+    <result column="OFFER_NO" jdbcType="VARCHAR" property="offerNo" />
+    <result column="SHORT_NAME2" jdbcType="VARCHAR" property="shortName2" />
+    <result column="OFFER_TERM" jdbcType="DECIMAL" property="offerTerm" />
+    <result column="COMMIT_MONTHLY" jdbcType="DECIMAL" property="commitMonthly" />
+    <result column="PREPAID" jdbcType="DECIMAL" property="prepaid" />
+    <result column="PERIOD" jdbcType="DECIMAL" property="period" />
+    <result column="REFUND_MONTHLY" jdbcType="DECIMAL" property="refundMonthly" />
+    <result column="REFUND_1ST_MONTH" jdbcType="DECIMAL" property="refund1stMonth" />
+    <result column="REFUND_LAST_MONTH" jdbcType="DECIMAL" property="refundLastMonth" />
+    <result column="ORDER_DETAIL_TYPE" jdbcType="DECIMAL" property="orderDetailType" />
+    <result column="MERCHANT_ID" jdbcType="DECIMAL" property="merchantId" />
+    <result column="QUANTITY" jdbcType="DECIMAL" property="quantity" />
+    <result column="PRICE" jdbcType="DECIMAL" property="price" />
+    <result column="SERIESCODE" jdbcType="VARCHAR" property="seriescode" />
+    <result column="OFFER_GROUP_NO" jdbcType="VARCHAR" property="offerGroupNo" />
+    <result column="PROMO_TYPE" jdbcType="DECIMAL" property="promoType" />
+    <result column="COND_ID" jdbcType="VARCHAR" property="condId" />
+    <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
+    <result column="PAYMENT_PRICE" jdbcType="DECIMAL" property="paymentPrice" />
+    <result column="PURCHASE_PRICE" jdbcType="DECIMAL" property="purchasePrice" />
+    <result column="SIMCARD_SUIT_ID" jdbcType="DECIMAL" property="simcardSuitId" />
+    <result column="SIMCARD_PACKAGE_ID" jdbcType="VARCHAR" property="simcardPackageId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORDER_DETAIL_ID, ORDER_ID, ITEM_ID, ITEM_NAME, ITEM_NO, SKU_ID, SKU, SKU_IMG, SKU_NAME, 
+    SKU_CAT_TYPE, SKU_SPEC, MARKET_PRICE, SKU_DISCOUNT, SKU_PRICE, OFFER_GROUP_ID, OFFER_GROUP_NAME, 
+    OFFER_TYPE, SHORT_NAME, OFFER_ID, OFFER_NAME, OFFER_NO, SHORT_NAME2, OFFER_TERM, 
+    COMMIT_MONTHLY, PREPAID, PERIOD, REFUND_MONTHLY, REFUND_1ST_MONTH, REFUND_LAST_MONTH, 
+    ORDER_DETAIL_TYPE, MERCHANT_ID, QUANTITY, PRICE, SERIESCODE, OFFER_GROUP_NO, PROMO_TYPE, 
+    COND_ID, PRODUCT_ID, PAYMENT_PRICE, PURCHASE_PRICE, SIMCARD_SUIT_ID, SIMCARD_PACKAGE_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from EB_ORDER_DETAIL
+    where ORDER_DETAIL_ID = #{orderDetailId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from EB_ORDER_DETAIL
+    where ORDER_DETAIL_ID = #{orderDetailId}
+  </delete>
+  <!--创建订单明细 -->
+  <insert id="insert" parameterType="com.rl.ecps.model.EbOrderDetail">
+    insert into EB_ORDER_DETAIL
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        ORDER_DETAIL_ID,
+      <if test="orderId != null">
+        ORDER_ID,
+      </if>
+      <if test="itemId != null">
+        ITEM_ID,
+      </if>
+      <if test="itemName != null">
+        ITEM_NAME,
+      </if>
+      <if test="itemNo != null">
+        ITEM_NO,
+      </if>
+      <if test="skuId != null">
+        SKU_ID,
+      </if>
+      <if test="sku != null">
+        SKU,
+      </if>
+      <if test="skuImg != null">
+        SKU_IMG,
+      </if>
+      <if test="skuName != null">
+        SKU_NAME,
+      </if>
+      <if test="skuCatType != null">
+        SKU_CAT_TYPE,
+      </if>
+      <if test="skuSpec != null">
+        SKU_SPEC,
+      </if>
+      <if test="marketPrice != null">
+        MARKET_PRICE,
+      </if>
+      <if test="skuDiscount != null">
+        SKU_DISCOUNT,
+      </if>
+      <if test="skuPrice != null">
+        SKU_PRICE,
+      </if>
+      <if test="offerGroupId != null">
+        OFFER_GROUP_ID,
+      </if>
+      <if test="offerGroupName != null">
+        OFFER_GROUP_NAME,
+      </if>
+      <if test="offerType != null">
+        OFFER_TYPE,
+      </if>
+      <if test="shortName != null">
+        SHORT_NAME,
+      </if>
+      <if test="offerId != null">
+        OFFER_ID,
+      </if>
+      <if test="offerName != null">
+        OFFER_NAME,
+      </if>
+      <if test="offerNo != null">
+        OFFER_NO,
+      </if>
+      <if test="shortName2 != null">
+        SHORT_NAME2,
+      </if>
+      <if test="offerTerm != null">
+        OFFER_TERM,
+      </if>
+      <if test="commitMonthly != null">
+        COMMIT_MONTHLY,
+      </if>
+      <if test="prepaid != null">
+        PREPAID,
+      </if>
+      <if test="period != null">
+        PERIOD,
+      </if>
+      <if test="refundMonthly != null">
+        REFUND_MONTHLY,
+      </if>
+      <if test="refund1stMonth != null">
+        REFUND_1ST_MONTH,
+      </if>
+      <if test="refundLastMonth != null">
+        REFUND_LAST_MONTH,
+      </if>
+      <if test="orderDetailType != null">
+        ORDER_DETAIL_TYPE,
+      </if>
+      <if test="merchantId != null">
+        MERCHANT_ID,
+      </if>
+      <if test="quantity != null">
+        QUANTITY,
+      </if>
+      <if test="price != null">
+        PRICE,
+      </if>
+      <if test="seriescode != null">
+        SERIESCODE,
+      </if>
+      <if test="offerGroupNo != null">
+        OFFER_GROUP_NO,
+      </if>
+      <if test="promoType != null">
+        PROMO_TYPE,
+      </if>
+      <if test="condId != null">
+        COND_ID,
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="paymentPrice != null">
+        PAYMENT_PRICE,
+      </if>
+      <if test="purchasePrice != null">
+        PURCHASE_PRICE,
+      </if>
+      <if test="simcardSuitId != null">
+        SIMCARD_SUIT_ID,
+      </if>
+      <if test="simcardPackageId != null">
+        SIMCARD_PACKAGE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+       seqorderdetailid.nextval,
+      <if test="orderId != null">
+        #{orderId},
+      </if>
+      <if test="itemId != null">
+        #{itemId},
+      </if>
+      <if test="itemName != null">
+        #{itemName},
+      </if>
+      <if test="itemNo != null">
+        #{itemNo},
+      </if>
+      <if test="skuId != null">
+        #{skuId},
+      </if>
+      <if test="sku != null">
+        #{sku},
+      </if>
+      <if test="skuImg != null">
+        #{skuImg},
+      </if>
+      <if test="skuName != null">
+        #{skuName},
+      </if>
+      <if test="skuCatType != null">
+        #{skuCatType},
+      </if>
+      <if test="skuSpec != null">
+        #{skuSpec},
+      </if>
+      <if test="marketPrice != null">
+        #{marketPrice},
+      </if>
+      <if test="skuDiscount != null">
+        #{skuDiscount},
+      </if>
+      <if test="skuPrice != null">
+        #{skuPrice},
+      </if>
+      <if test="offerGroupId != null">
+        #{offerGroupId},
+      </if>
+      <if test="offerGroupName != null">
+        #{offerGroupName},
+      </if>
+      <if test="offerType != null">
+        #{offerType},
+      </if>
+      <if test="shortName != null">
+        #{shortName},
+      </if>
+      <if test="offerId != null">
+        #{offerId},
+      </if>
+      <if test="offerName != null">
+        #{offerName},
+      </if>
+      <if test="offerNo != null">
+        #{offerNo},
+      </if>
+      <if test="shortName2 != null">
+        #{shortName2},
+      </if>
+      <if test="offerTerm != null">
+        #{offerTerm},
+      </if>
+      <if test="commitMonthly != null">
+        #{commitMonthly},
+      </if>
+      <if test="prepaid != null">
+        #{prepaid},
+      </if>
+      <if test="period != null">
+        #{period},
+      </if>
+      <if test="refundMonthly != null">
+        #{refundMonthly},
+      </if>
+      <if test="refund1stMonth != null">
+        #{refund1stMonth},
+      </if>
+      <if test="refundLastMonth != null">
+        #{refundLastMonth},
+      </if>
+      <if test="orderDetailType != null">
+        #{orderDetailType},
+      </if>
+      <if test="merchantId != null">
+        #{merchantId},
+      </if>
+      <if test="quantity != null">
+        #{quantity},
+      </if>
+      <if test="price != null">
+        #{price},
+      </if>
+      <if test="seriescode != null">
+        #{seriescode},
+      </if>
+      <if test="offerGroupNo != null">
+        #{offerGroupNo},
+      </if>
+      <if test="promoType != null">
+        #{promoType},
+      </if>
+      <if test="condId != null">
+        #{condId},
+      </if>
+      <if test="productId != null">
+        #{productId},
+      </if>
+      <if test="paymentPrice != null">
+        #{paymentPrice},
+      </if>
+      <if test="purchasePrice != null">
+        #{purchasePrice},
+      </if>
+      <if test="simcardSuitId != null">
+        #{simcardSuitId},
+      </if>
+      <if test="simcardPackageId != null">
+        #{simcardPackageId},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rl.ecps.model.EbOrderDetail">
+    update EB_ORDER_DETAIL
+    <set>
+      <if test="orderId != null">
+        ORDER_ID = #{orderId},
+      </if>
+      <if test="itemId != null">
+        ITEM_ID = #{itemId},
+      </if>
+      <if test="itemName != null">
+        ITEM_NAME = #{itemName},
+      </if>
+      <if test="itemNo != null">
+        ITEM_NO = #{itemNo},
+      </if>
+      <if test="skuId != null">
+        SKU_ID = #{skuId},
+      </if>
+      <if test="sku != null">
+        SKU = #{sku},
+      </if>
+      <if test="skuImg != null">
+        SKU_IMG = #{skuImg},
+      </if>
+      <if test="skuName != null">
+        SKU_NAME = #{skuName},
+      </if>
+      <if test="skuCatType != null">
+        SKU_CAT_TYPE = #{skuCatType},
+      </if>
+      <if test="skuSpec != null">
+        SKU_SPEC = #{skuSpec},
+      </if>
+      <if test="marketPrice != null">
+        MARKET_PRICE = #{marketPrice},
+      </if>
+      <if test="skuDiscount != null">
+        SKU_DISCOUNT = #{skuDiscount},
+      </if>
+      <if test="skuPrice != null">
+        SKU_PRICE = #{skuPrice},
+      </if>
+      <if test="offerGroupId != null">
+        OFFER_GROUP_ID = #{offerGroupId},
+      </if>
+      <if test="offerGroupName != null">
+        OFFER_GROUP_NAME = #{offerGroupName},
+      </if>
+      <if test="offerType != null">
+        OFFER_TYPE = #{offerType},
+      </if>
+      <if test="shortName != null">
+        SHORT_NAME = #{shortName},
+      </if>
+      <if test="offerId != null">
+        OFFER_ID = #{offerId},
+      </if>
+      <if test="offerName != null">
+        OFFER_NAME = #{offerName},
+      </if>
+      <if test="offerNo != null">
+        OFFER_NO = #{offerNo},
+      </if>
+      <if test="shortName2 != null">
+        SHORT_NAME2 = #{shortName2},
+      </if>
+      <if test="offerTerm != null">
+        OFFER_TERM = #{offerTerm},
+      </if>
+      <if test="commitMonthly != null">
+        COMMIT_MONTHLY = #{commitMonthly},
+      </if>
+      <if test="prepaid != null">
+        PREPAID = #{prepaid},
+      </if>
+      <if test="period != null">
+        PERIOD = #{period},
+      </if>
+      <if test="refundMonthly != null">
+        REFUND_MONTHLY = #{refundMonthly},
+      </if>
+      <if test="refund1stMonth != null">
+        REFUND_1ST_MONTH = #{refund1stMonth},
+      </if>
+      <if test="refundLastMonth != null">
+        REFUND_LAST_MONTH = #{refundLastMonth},
+      </if>
+      <if test="orderDetailType != null">
+        ORDER_DETAIL_TYPE = #{orderDetailType},
+      </if>
+      <if test="merchantId != null">
+        MERCHANT_ID = #{merchantId},
+      </if>
+      <if test="quantity != null">
+        QUANTITY = #{quantity},
+      </if>
+      <if test="price != null">
+        PRICE = #{price},
+      </if>
+      <if test="seriescode != null">
+        SERIESCODE = #{seriescode},
+      </if>
+      <if test="offerGroupNo != null">
+        OFFER_GROUP_NO = #{offerGroupNo},
+      </if>
+      <if test="promoType != null">
+        PROMO_TYPE = #{promoType},
+      </if>
+      <if test="condId != null">
+        COND_ID = #{condId},
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID = #{productId},
+      </if>
+      <if test="paymentPrice != null">
+        PAYMENT_PRICE = #{paymentPrice},
+      </if>
+      <if test="purchasePrice != null">
+        PURCHASE_PRICE = #{purchasePrice},
+      </if>
+      <if test="simcardSuitId != null">
+        SIMCARD_SUIT_ID = #{simcardSuitId},
+      </if>
+      <if test="simcardPackageId != null">
+        SIMCARD_PACKAGE_ID = #{simcardPackageId},
+      </if>
+    </set>
+    where ORDER_DETAIL_ID = #{orderDetailId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rl.ecps.model.EbOrderDetail">
+    update EB_ORDER_DETAIL
+    set ORDER_ID = #{orderId},
+      ITEM_ID = #{itemId},
+      ITEM_NAME = #{itemName},
+      ITEM_NO = #{itemNo},
+      SKU_ID = #{skuId},
+      SKU = #{sku},
+      SKU_IMG = #{skuImg},
+      SKU_NAME = #{skuName},
+      SKU_CAT_TYPE = #{skuCatType},
+      SKU_SPEC = #{skuSpec},
+      MARKET_PRICE = #{marketPrice},
+      SKU_DISCOUNT = #{skuDiscount},
+      SKU_PRICE = #{skuPrice},
+      OFFER_GROUP_ID = #{offerGroupId},
+      OFFER_GROUP_NAME = #{offerGroupName},
+      OFFER_TYPE = #{offerType},
+      SHORT_NAME = #{shortName},
+      OFFER_ID = #{offerId},
+      OFFER_NAME = #{offerName},
+      OFFER_NO = #{offerNo},
+      SHORT_NAME2 = #{shortName2},
+      OFFER_TERM = #{offerTerm},
+      COMMIT_MONTHLY = #{commitMonthly},
+      PREPAID = #{prepaid},
+      PERIOD = #{period},
+      REFUND_MONTHLY = #{refundMonthly},
+      REFUND_1ST_MONTH = #{refund1stMonth},
+      REFUND_LAST_MONTH = #{refundLastMonth},
+      ORDER_DETAIL_TYPE = #{orderDetailType},
+      MERCHANT_ID = #{merchantId},
+      QUANTITY = #{quantity},
+      PRICE = #{price},
+      SERIESCODE = #{seriescode},
+      OFFER_GROUP_NO = #{offerGroupNo},
+      PROMO_TYPE = #{promoType},
+      COND_ID = #{condId},
+      PRODUCT_ID = #{productId},
+      PAYMENT_PRICE = #{paymentPrice},
+      PURCHASE_PRICE = #{purchasePrice},
+      SIMCARD_SUIT_ID = #{simcardSuitId},
+      SIMCARD_PACKAGE_ID = #{simcardPackageId}
+    where ORDER_DETAIL_ID = #{orderDetailId}
+  </update>
+</mapper>

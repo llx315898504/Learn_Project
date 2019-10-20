@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- package：是当前配置文件的公共的包 -->
+<hibernate-mapping package="com.my.model">
+	
+	<class name="Employee" table="t_employee">
+		
+		<id name="empId" column="emp_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name"></property>
+		<property name="gender"></property>
+		<property name="age"></property>
+		<many-to-one name="Team" column="team_id"></many-to-one>
+	</class>
+</hibernate-mapping>

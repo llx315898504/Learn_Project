@@ -1,0 +1,6 @@
+projectKey=kafka
+serverUrl=http://192.168.196.129:8090/sonarQube
+serverVersion=6.7.6.38781
+dashboardUrl=http://192.168.196.129:8090/sonarQube/dashboard/index/kafka
+ceTaskId=AW3qBAwyKimyY2H3H3hG
+ceTaskUrl=http://192.168.196.129:8090/sonarQube/api/ce/task?id=AW3qBAwyKimyY2H3H3hG

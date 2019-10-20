@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 延迟加载的配置 -->
+	<settings>
+		<!-- 
+		lazyLoadingEnabled：延迟加载的总开关，TRUE表示使用延迟加载，FALSE表示禁用延迟加载，默认为TRUE。
+		 -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!-- 
+		 aggressiveLazyLoading：TRUE表示启用时不适用延迟加载，FALSE使用延迟加载
+		 -->
+	 	<setting name="aggressiveLazyLoading" value="false"/>
+	 	<!-- 开启二级缓存，在mabatis中只要缓存的配置都指的是二级缓存 -->
+	 	<setting name="cacheEnabled" value="true"/>
+	</settings>
+	<!-- 
+	非自定义别名：JDK中的所有类都使用了非自定义别名，别名的内容是类名的所有字母不区分大小写，
+	如果是包装类可以使用其基本数据类型的名字
+	 -->
+	<!-- 
+	 typeAliases：管理配置数据类型的别名,属于自定义别名
+	 type：要被定义成别名的数据类型
+	 alias：别名的定义
+	 -->
+   <typeAliases>
+   	 <typeAlias type="com.my.model.Person" alias="person"/>
+   	 <typeAlias type="com.my.model.QueryCondition" alias="qc"/>
+   	 <typeAlias type="com.my.model.Order" alias="order"/>
+   	 <typeAlias type="com.my.model.OrderDetail" alias="orderDetail"/>
+   	  <typeAlias type="com.my.model.Role" alias="Role"/>
+   	   <typeAlias type="com.my.model.PersonRole" alias="PersonRole"/>
+   </typeAliases>
+	<!-- 数据库环境配置如果和spring整合就不需要配了，完全交给spring -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://localhost:3306/learn_db?&amp;characterEncoding=UTF-8" />
+				<property name="username" value="root" />
+				<property name="password" value="881207" />
+			</dataSource>
+		</environment>
+	</environments>
+	<!-- 管理每一张表的映射文件 resource:引入映射文件，注意包之间用/ -->
+	<mappers>
+		<mapper resource="com/my/mapper/PersonMapper.xml" />
+		<mapper resource="com/my/mapper/PersonTestMapper.xml" />
+		<mapper resource="com/my/mapper/OrderMapper.xml" />
+		<mapper resource="com/my/mapper/OrderDetailMapper.xml" />
+		<mapper resource="com/my/mapper/RoleMapper.xml" />
+		<mapper resource="com/my/mapper/PersonRoleMapper.xml" />
+		<mapper resource="com/my/mapper/IdCardMapper.xml" />
+	</mappers>
+</configuration>

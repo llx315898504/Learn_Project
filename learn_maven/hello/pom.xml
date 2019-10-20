@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<!-- pom版本号，不用该表 -->
+	<modelVersion>4.0.0</modelVersion>
+	<!-- 组织名称加项目名 -->
+	<groupId>com.my</groupId>
+	<!-- 模块名称 -->
+	<artifactId>hello</artifactId>
+	<!-- 版本号，SNAPSHOT正在开发中的版本，RELEASE成熟可发布版本 -->
+	<version>0.0.1-SNAPSHOT</version>
+	<name>hello</name>
+
+	<dependencies>
+		<!-- 第三方依赖包的配置 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.9</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<!-- 配置maven插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.7.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.0.0</version>
+			</plugin>
+			<plugin>
+				<!-- 要配置插件的坐标 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<!-- 要执行的目标或者命令 -->
+				<executions>
+					<execution>
+						<!-- 生命周期的一个阶段 -->
+						<phase>package</phase>
+						<!-- 要执行的命令 -->
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

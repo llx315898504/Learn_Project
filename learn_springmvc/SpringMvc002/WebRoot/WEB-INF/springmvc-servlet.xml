@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd ">
+	<!--
+	 mvc注解驱动
+	<mvc:annotation-driven/>
+	-->
+	<!--
+	扫描器存在就不需要使用注解驱动，默认带注解驱动功能,扫描带有以下注解的类
+	@controller
+    @service
+	@repository
+	@componet：用于无法分层的类也想使用spring来管理
+	@autoware
+	@resource
+	-->
+	<context:component-scan base-package="com.my.controller"></context:component-scan>
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 前缀是所有JSP文件的公共路径 -->
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<!--后缀是所有视图文件的后缀名 -->
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	<!-- 
+		复杂类型表单视图解析器配置
+     	id：必须使用内部默认multipartResolver作为id，否则上传报错
+     -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<!-- 以字节为单位，限制为大约1M -->
+	<property name="maxUploadSize" value="1024000"></property>
+	</bean>
+	<!-- 
+		拦截器的配置
+		mvc:mapping：path属性指定拦截器的拦截范围
+	    /test/**：表示拦截以"/test"开始的所有请求，"**"表示所有
+	 -->
+	<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="/**"/>
+	    <bean class="com.my.interceptor.MyInterceptor"></bean>
+	</mvc:interceptor>
+	</mvc:interceptors>
+</beans>
